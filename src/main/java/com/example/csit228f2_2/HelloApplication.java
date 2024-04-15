@@ -24,8 +24,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class HelloApplication extends Application {
     public static List<User> users;
@@ -35,11 +37,23 @@ public class HelloApplication extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        users = new ArrayList<>();
-        // LOAD USERS
-        users.add(new User("tsgtest", "123456"));
-        users.add(new User("jayvince", "secret"));
-        users.add(new User("russselll", "palma"));
+        try(Connection c = MySQLConnection.getConnection();
+            Statement statement = c.createStatement()){
+            String createTableQuery = "CREATE TABLE IF NOT EXISTS users ("+
+                    "id INT AUTO_INCREMENT PRIMARY KEY," +
+                    "username VARCHAR(50) NOT NULL," +
+                    "password VARCHAR(50) NOT NULL)";
+            statement.execute(createTableQuery);
+            System.out.println("Table created succesfully!");
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+//        users = new ArrayList<>();
+//        // LOAD USERS
+//        users.add(new User("tsgtest", "123456"));
+//        users.add(new User("jayvince", "secret"));
+//        users.add(new User("russselll", "palma"));
 
         AnchorPane pnMain = new AnchorPane();
         GridPane grid = new GridPane();
@@ -104,28 +118,118 @@ public class HelloApplication extends Application {
         HBox hbSignIn = new HBox();
         hbSignIn.getChildren().add(btnSignIn);
         hbSignIn.setAlignment(Pos.CENTER);
+
         grid.add(hbSignIn, 0, 3, 2, 1);
+
+        Button btnRegister = new Button("Register");
+        btnRegister.setFont(Font.font(45));
+        HBox hbRegister = new HBox();
+        hbRegister.getChildren().add(btnRegister);
+        hbRegister.setAlignment(Pos.CENTER);
+        grid.add(hbRegister, 0, 3, 1, 1);
+
+        Button btnDelete = new Button("Delete");
+        btnDelete.setFont(Font.font(45));
+        HBox hbDelete = new HBox();
+        hbDelete.getChildren().add(btnDelete);
+        hbDelete.setAlignment(Pos.CENTER);
+        grid.add(hbDelete, 0, 4, 1, 1);
+
+        Button btnUpdate = new Button("Update");
+        btnDelete.setFont(Font.font(45));
+        HBox hbUpdate = new HBox();
+        hbUpdate.getChildren().add(btnUpdate);
+        hbUpdate.setAlignment(Pos.CENTER);
+        grid.add(hbUpdate, 0, 4, 2, 1);
+
+
         final Text actionTarget = new Text("Hi");
         actionTarget.setFont(Font.font(30));
         grid.add(actionTarget, 1, 6);
 
+        btnRegister.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                try(Connection c = MySQLConnection.getConnection();
+                    PreparedStatement preparedStatement= c.prepareStatement(
+                            "INSERT INTO users (username, password) VALUES (?,?)")){
+
+                    String name = tfUsername.getText();
+                    String pass = pfPassword.getText();
+
+                    preparedStatement.setString(1, name);
+                    preparedStatement.setString(2,pass);
+
+                    int rowsInserted = preparedStatement.executeUpdate();
+                    if(rowsInserted > 0){
+                        System.out.println("Data Inserted Successfully!");
+                    }
+                }catch(SQLException e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        btnDelete.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+
+                try(Connection c = MySQLConnection.getConnection();
+                    Statement statement = c.createStatement()){
+
+                    String selectQuery = "SELECT * FROM users";
+                    ResultSet resultSet =  statement.executeQuery(selectQuery);
+
+                    while(resultSet.next()){
+                        int id = resultSet.getInt("id");
+                        if(Objects.equals(username, name) && Objects.equals(password, pass)){
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
+                            try {
+                                Scene scene = new Scene(loader.load());
+                                stage.setScene(scene);
+                                stage.show();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    }
+                }catch(SQLException e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
         btnSignIn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                String username = tfUsername.getText();
-                String password = pfPassword.getText();
-                for (User user : users) {
-                    if (username.equals(user.username) && password.equals(user.password)) {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
-                        try {
-                            Scene scene = new Scene(loader.load());
-                            stage.setScene(scene);
-                            stage.show();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
+                try(Connection c = MySQLConnection.getConnection();
+                    Statement statement = c.createStatement()){
+
+                    String selectQuery = "SELECT * FROM users";
+                    ResultSet resultSet =  statement.executeQuery(selectQuery);
+
+                    String username = tfUsername.getText();
+                    String password = pfPassword.getText();
+
+                    while(resultSet.next()){
+                        String name = resultSet.getString("username");
+                        String pass = resultSet.getString("password");
+
+                        if(Objects.equals(username, name) && Objects.equals(password, pass)){
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
+                            try {
+                                Scene scene = new Scene(loader.load());
+                                stage.setScene(scene);
+                                stage.show();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                     }
+                }catch(SQLException e){
+                    e.printStackTrace();
                 }
+
                 actionTarget.setText("Invalid username/password");
                 actionTarget.setOpacity(1);
             }
