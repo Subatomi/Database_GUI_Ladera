@@ -170,34 +170,34 @@ public class HelloApplication extends Application {
             }
         });
 
-        btnDelete.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-
-                try(Connection c = MySQLConnection.getConnection();
-                    Statement statement = c.createStatement()){
-
-                    String selectQuery = "SELECT * FROM users";
-                    ResultSet resultSet =  statement.executeQuery(selectQuery);
-
-                    while(resultSet.next()){
-                        int id = resultSet.getInt("id");
-                        if(Objects.equals(username, name) && Objects.equals(password, pass)){
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
-                            try {
-                                Scene scene = new Scene(loader.load());
-                                stage.setScene(scene);
-                                stage.show();
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                    }
-                }catch(SQLException e){
-                    e.printStackTrace();
-                }
-            }
-        });
+//        btnDelete.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent actionEvent) {
+//
+//                try(Connection c = MySQLConnection.getConnection();
+//                    Statement statement = c.createStatement()){
+//
+//                    String selectQuery = "SELECT * FROM users";
+//                    ResultSet resultSet =  statement.executeQuery(selectQuery);
+//
+//                    while(resultSet.next()){
+//                        int id = resultSet.getInt("id");
+//                        if(Objects.equals(username, name) && Objects.equals(password, pass)){
+//                            FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
+//                            try {
+//                                Scene scene = new Scene(loader.load());
+//                                stage.setScene(scene);
+//                                stage.show();
+//                            } catch (IOException e) {
+//                                throw new RuntimeException(e);
+//                            }
+//                        }
+//                    }
+//                }catch(SQLException e){
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
 
         btnSignIn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
