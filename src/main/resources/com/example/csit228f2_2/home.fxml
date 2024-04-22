@@ -5,13 +5,13 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.csit228f2_2.Home">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.csit228f2_2.homeController">
    <children>
       <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <HBox alignment="CENTER" prefHeight="48.0" prefWidth="600.0" BorderPane.alignment="CENTER_LEFT">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name" textAlignment="CENTER" />
+                  <Text fx:id="txtName" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" textAlignment="CENTER" />
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" HBox.hgrow="ALWAYS">
                      <children>
                         <Button mnemonicParsing="false" text="Profile" />
@@ -33,10 +33,39 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Diary Title" wrappingWidth="102.794921875" />
-                  <TextField />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Enter  Diary Content" />
-                  <TextArea prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Log Title:" wrappingWidth="102.794921875" />
+                  <TextField fx:id="tfLogTitle" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Enter  Log Content:" />
+                  <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+                     <content>
+                        <TextArea fx:id="taLogContent" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
+                     </content>
+                  </ScrollPane>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <Button fx:id="btnInsertLog" mnemonicParsing="false" onAction="#insertLog" text="Insert" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="btnUpdateLog" mnemonicParsing="false" onAction="#updateLog" text="Update" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="btnDeleteLog" mnemonicParsing="false" onAction="#deleteLog" text="Delete">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Button>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
                </children>
             </VBox>
          </left>
@@ -53,9 +82,13 @@
          <center>
             <VBox prefHeight="200.0" prefWidth="100.0" spacing="8.0" BorderPane.alignment="CENTER">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select Diary Content" />
-                  <ChoiceBox prefHeight="26.0" prefWidth="375.0" />
-                  <TextArea prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select Log Title:" />
+                  <ChoiceBox fx:id="chbLogTitle" prefHeight="26.0" prefWidth="375.0" />
+                  <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                     <content>
+                        <TextArea fx:id="taStaticLogContent" editable="false" prefHeight="158.0" prefWidth="322.0" wrapText="true" />
+                     </content>
+                  </ScrollPane>
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

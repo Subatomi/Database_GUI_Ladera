@@ -19,17 +19,17 @@
                   <Font size="23.0" />
                </font>
             </Text>
-            <TextField promptText="Enter username" />
-            <TextField promptText="Enter email" />
-            <TextField promptText="Enter password" />
+            <TextField fx:id="tfUsername" promptText="Enter username" />
+            <TextField fx:id="tfEmail" promptText="Enter email" />
+            <TextField fx:id="tfPassword" promptText="Enter password" />
             <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <Button mnemonicParsing="false" text="Register">
+                  <Button fx:id="btnRegRegister" mnemonicParsing="false" onAction="#insertDataUsers" text="Register">
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" top="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" text="Back-&gt;">
+                  <Button fx:id="btnRegBack" mnemonicParsing="false" onAction="#onBtnRegGoBack" text="Back-&gt;">
                      <HBox.margin>
                         <Insets bottom="10.0" top="10.0" />
                      </HBox.margin>
