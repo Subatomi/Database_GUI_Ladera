@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.csit228f2_2.homeController">
+   <children>
+      <BorderPane fx:id="bpProfile" layoutX="87.0" layoutY="77.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <HBox alignment="CENTER_RIGHT" prefHeight="69.0" prefWidth="600.0" spacing="10.0">
+               <children>
+                  <Button fx:id="btnResetPass" mnemonicParsing="false" onAction="#changePaneToResetPass" text="Reset Password" />
+                  <Button fx:id="btnDelAccount" mnemonicParsing="false" onAction="#changeToDelete" text="Delete Account" />
+                  <Button fx:id="btnProfileBack" mnemonicParsing="false" onAction="#goBackToHome" text="Back-&gt;" />
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </HBox>
+         </top>
+         <center>
+            <ImageView fitHeight="323.0" fitWidth="452.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../img/SARCA_logo.png" />
+               </image>
+               <BorderPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </BorderPane.margin>
+            </ImageView>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

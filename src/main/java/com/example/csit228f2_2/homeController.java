@@ -1,12 +1,20 @@
 package com.example.csit228f2_2;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.Objects;
@@ -125,10 +133,12 @@ public class homeController implements Initializable {
         }
 
         try (Connection c = MySQLConnection.getConnection();
-             Statement statement = c.createStatement()) {
+             PreparedStatement preparedStatement = c.prepareStatement(
+                     "SELECT logTitle FROM tblLog WHERE userId = ?")) {
 
-            String selectQuery = "SELECT logTitle FROM tblLog";
-            ResultSet resultSet = statement.executeQuery(selectQuery);
+            preparedStatement.setInt(1, UserId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 String logTitle = resultSet.getString("logTitle");
@@ -147,8 +157,140 @@ public class homeController implements Initializable {
         taLogContent.clear();
     }
 
+
+    @FXML
+    public Button btnResetPass;
+
+    @FXML
+    public Button btnDelAccount;
+
+    @FXML
+    public BorderPane bpProfile;
+
+    @FXML
+    private void changePaneToResetPass() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("forgotPass.fxml"));
+        Pane tempPane = fxmlLoader.load();
+        bpProfile.setCenter(tempPane);
+    }
+
+    @FXML
+    public Button btnProfile;
+
+    @FXML
+    private void changeToProfile() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("profile.fxml"));
+        loader.setControllerFactory(controllerClass -> {
+            homeController controller = new homeController();
+            controller.initializeUserData(UserId,currUsername);
+            return controller;
+        });
+        Parent pane = loader.load();
+        Stage stage = (Stage) btnProfile.getScene().getWindow();
+        double currentWidth = stage.getWidth();
+        double currentHeight = stage.getHeight();
+        Scene scene = new Scene(pane, currentWidth, currentHeight);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML
+    private void changeToDelete() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("deleteAccount.fxml"));
+        Pane tempPane = fxmlLoader.load();
+        bpProfile.setCenter(tempPane);
+    }
+
+    @FXML
+    public TextField tfemail;
+
+    @FXML
+    public TextField tfpassword;
+
+    @FXML
+    public Button btnConfirmDel;
+
+    @FXML
+    private void changePassword() throws IOException {
+        try (Connection c = MySQLConnection.getConnection();
+             PreparedStatement preparedStatement = c.prepareStatement(
+                     "UPDATE users SET password = ? WHERE email = ?")) {
+
+            String email = tfemail.getText();
+            String pass = tfpassword.getText();
+
+            preparedStatement.setString(2, email);
+            preparedStatement.setString(1, pass);
+
+            int rowsDeleted = preparedStatement.executeUpdate();
+            if (rowsDeleted > 0) {
+                System.out.println("Account Password Changed Succesfully");
+                tfemail.clear();
+                tfpassword.clear();
+            } else {
+                System.out.println("Account Password change FAIL ");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void deleteAccount() throws IOException {
+        try (Connection c = MySQLConnection.getConnection();
+             PreparedStatement preparedStatement = c.prepareStatement(
+                     "DELETE FROM users WHERE email = ? AND password = ?")) {
+
+            String email = tfemail.getText();
+            String pass = tfpassword.getText();
+
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, pass);
+
+            int rowsDeleted = preparedStatement.executeUpdate();
+            if (rowsDeleted > 0) {
+
+                System.out.println("Account Deleted Succesfully");
+
+                Parent pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("index.fxml")));
+                Stage stage = (Stage) btnConfirmDel.getScene().getWindow();
+                double currentWidth = stage.getWidth();
+                double currentHeight = stage.getHeight();
+                Scene scene = new Scene(pane, currentWidth, currentHeight);
+                stage.setScene(scene);
+                stage.show();
+
+            } else {
+                System.out.println("Account Deletion FAIL");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     @FXML
     public TextArea taStaticLogContent;
+
+    @FXML
+    public Button btnProfileBack;
+
+    @FXML
+    private void goBackToHome() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("home.fxml"));
+        loader.setControllerFactory(controllerClass -> {
+            homeController controller = new homeController();
+            controller.initializeUserData(UserId,currUsername);
+            return controller;
+        });
+        Parent pane = loader.load();
+        Stage stage = (Stage) btnProfileBack.getScene().getWindow();
+        double currentWidth = stage.getWidth();
+        double currentHeight = stage.getHeight();
+        Scene scene = new Scene(pane, currentWidth, currentHeight);
+        stage.setScene(scene);
+        stage.show();
+    }
 
 
     @FXML
@@ -161,9 +303,11 @@ public class homeController implements Initializable {
                 String selectedOption = chbLogTitle.getValue();
                 try (Connection c = MySQLConnection.getConnection();
                      PreparedStatement statement = c.prepareStatement(
-                             "SELECT logText FROM tblLog WHERE logTitle = ?"
+                             "SELECT logText FROM tblLog WHERE logTitle = ? AND userId = ?"
                      )) {
                     statement.setString(1, selectedOption);
+//                    System.out.println(UserId);
+                    statement.setInt(2, UserId);
                     ResultSet resultSet = statement.executeQuery();
 
                     if (resultSet.next()) {
@@ -184,6 +328,7 @@ public class homeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        System.out.println("USERID: " + UserId + "Username: " + currUsername);
         initialize();
     }
 }

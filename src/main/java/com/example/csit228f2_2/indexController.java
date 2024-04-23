@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
@@ -27,7 +28,9 @@ public class indexController {
     private void onBtnRegisterClick() throws IOException {
         Parent pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("register.fxml")));
         Stage stage = (Stage) btnRegister.getScene().getWindow();
-        Scene scene = new Scene(pane);
+        double currentWidth = stage.getWidth();
+        double currentHeight = stage.getHeight();
+        Scene scene = new Scene(pane, currentWidth, currentHeight);
         stage.setScene(scene);
         stage.show();
     }
@@ -36,7 +39,9 @@ public class indexController {
     private void onBtnRegGoBack() throws IOException {
         Parent pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("index.fxml")));
         Stage stage = (Stage) btnRegBack.getScene().getWindow();
-        Scene scene = new Scene(pane);
+        double currentWidth = stage.getWidth();
+        double currentHeight = stage.getHeight();
+        Scene scene = new Scene(pane, currentWidth, currentHeight);
         stage.setScene(scene);
         stage.show();
     }
@@ -46,7 +51,6 @@ public class indexController {
         try (Connection connection = MySQLConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "UPDATE users SET name = ?, email = ? WHERE id = ?")) {
-            // Set new values for name, email, and the user ID to update
             String newName = "Jane Doe";
             String newEmail = "jane@example.com";
             int userIdToUpdate = 1;
@@ -109,10 +113,11 @@ public class indexController {
             int rowsInserted = insertStatement.executeUpdate();
             if (rowsInserted > 0) {
                 System.out.println("Data Inserted Successfully!");
-
                 Parent pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("index.fxml")));
                 Stage stage = (Stage) btnRegRegister.getScene().getWindow();
-                Scene scene = new Scene(pane);
+                double currentWidth = stage.getWidth();
+                double currentHeight = stage.getHeight();
+                Scene scene = new Scene(pane, currentWidth, currentHeight);
                 stage.setScene(scene);
                 stage.show();
             }
@@ -122,7 +127,6 @@ public class indexController {
             throw new RuntimeException(e);
         }
     }
-
 
     @FXML
     private void onLogInCheck() {
@@ -142,8 +146,6 @@ public class indexController {
                 if(Objects.equals(username, name) && Objects.equals(password, pass)){
 
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("home.fxml"));
-
-                    // Set a custom controller factory to initialize HomeController with data
                     loader.setControllerFactory(controllerClass -> {
                         homeController controller = new homeController();
                         try {
@@ -156,7 +158,9 @@ public class indexController {
 
                     Parent pane = loader.load();
                     Stage stage = (Stage) btnLogIn.getScene().getWindow();
-                    Scene scene = new Scene(pane);
+                    double currentWidth = stage.getWidth();
+                    double currentHeight = stage.getHeight();
+                    Scene scene = new Scene(pane, currentWidth, currentHeight);
                     stage.setScene(scene);
                     stage.show();
 

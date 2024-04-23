@@ -9,14 +9,14 @@
    <children>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="SARCA" textAlignment="CENTER" wrappingWidth="355.4629043340683" VBox.vgrow="ALWAYS">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="SARCA" textAlignment="CENTER" VBox.vgrow="ALWAYS">
                <font>
-                  <Font size="92.0" />
+                  <Font name="Corbel Bold Italic" size="96.0" />
                </font>
             </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Registration Form" textAlignment="CENTER">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="REGISTRATION FORM" textAlignment="CENTER">
                <font>
-                  <Font size="23.0" />
+                  <Font name="Corbel Bold" size="23.0" />
                </font>
             </Text>
             <TextField fx:id="tfUsername" promptText="Enter username" />
