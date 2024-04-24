@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.csit228f2_2.indexController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="tryBGColor" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.csit228f2_2.indexController">
    <children>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -19,20 +19,41 @@
                   <Font name="Corbel Bold" size="23.0" />
                </font>
             </Text>
-            <TextField fx:id="tfUsername" promptText="Enter username" />
-            <TextField fx:id="tfEmail" promptText="Enter email" />
-            <TextField fx:id="tfPassword" promptText="Enter password" />
+            <VBox>
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Username:" />
+                  <TextField fx:id="tfUsername" promptText="Username" />
+               </children>
+            </VBox>
+            <VBox>
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Email:" />
+                  <TextField fx:id="tfEmail" promptText="Email" />
+               </children>
+            </VBox>
+            <VBox>
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Password:" />
+                  <TextField fx:id="tfPassword" promptText="Password" />
+               </children>
+            </VBox>
             <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <Button fx:id="btnRegRegister" mnemonicParsing="false" onAction="#insertDataUsers" text="Register">
+                  <Button fx:id="btnRegRegister" mnemonicParsing="false" onAction="#insertDataUsers" style="-fx-background-color: lightgreen;" text="Register" textAlignment="CENTER" textFill="WHITE">
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" top="10.0" />
                      </HBox.margin>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
                   </Button>
-                  <Button fx:id="btnRegBack" mnemonicParsing="false" onAction="#onBtnRegGoBack" text="Back-&gt;">
+                  <Button fx:id="btnRegBack" mnemonicParsing="false" onAction="#onBtnRegGoBack" style="-fx-background-color: #f23735;" text="  Back  " textAlignment="CENTER" textFill="WHITE">
                      <HBox.margin>
                         <Insets bottom="10.0" top="10.0" />
                      </HBox.margin>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
                   </Button>
                </children>
             </HBox>

@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.csit228f2_2.indexController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="tryBGColor" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.csit228f2_2.indexController">
    <children>
       <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -25,11 +25,21 @@
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="SARCA" textAlignment="CENTER" wrappingWidth="303.13673400878906" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <font>
-                  <Font name="Corbel Bold" size="96.0" />
+                  <Font name="Corbel Bold Italic" size="96.0" />
                </font>
             </Text>
-            <TextField fx:id="tfUsername" prefHeight="26.0" prefWidth="228.0" promptText="Enter Username" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-            <PasswordField fx:id="tfPassword" prefHeight="26.0" prefWidth="228.0" promptText="Enter Password" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" GridPane.valignment="TOP" />
+            <VBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Username:" />
+                  <TextField fx:id="tfUsername" prefHeight="26.0" prefWidth="228.0" promptText="Username" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" GridPane.valignment="TOP">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Password:" />
+                  <PasswordField fx:id="tfPassword" prefHeight="26.0" prefWidth="228.0" promptText="Password" />
+               </children>
+            </VBox>
             <HBox alignment="TOP_RIGHT" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
                <children>
                   <Button fx:id="btnLogIn" mnemonicParsing="false" onAction="#onLogInCheck" text="Log In" HBox.hgrow="ALWAYS" />

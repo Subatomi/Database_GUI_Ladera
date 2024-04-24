@@ -15,7 +15,7 @@ import static javafx.application.Application.launch;
 public class Main extends Application {
     public static void main(String[] args) {
         createUsersTable();
-        launch();
+        launch(args);
     }
 
     @Override
@@ -33,7 +33,6 @@ public class Main extends Application {
     private static void createUsersTable(){
         try(Connection c = MySQLConnection.getConnection()){
             c.setAutoCommit(false);
-
             try(Statement statement = c.createStatement()){
                 String createTableQueryUsers = "CREATE TABLE IF NOT EXISTS users ("+
                         "userId INT AUTO_INCREMENT PRIMARY KEY," +
@@ -56,10 +55,11 @@ public class Main extends Application {
                 System.out.println("Tables created successfully!");
             }catch(SQLException e){
                 c.rollback();
-                e.printStackTrace();
             }
         }catch(SQLException e){
-            e.printStackTrace();
+            //e.printStackTrace();
+        }catch(RuntimeException e){
+           System.out.println("Error in Connection");
         }
     }
 

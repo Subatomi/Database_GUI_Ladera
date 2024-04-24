@@ -11,12 +11,14 @@ public class MySQLConnection {
     private static final String PASSWORD = "anime";
     public static Connection getConnection(){
         Connection c = null;
-        try{
+        try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             c = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             System.out.println("Connected to the Database!");
-        }catch (ClassNotFoundException | SQLException e){
-            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("MySQL JDBC Driver not found!", e);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error connecting to the database.", e);
         }
         return c;
     }

@@ -155,6 +155,7 @@ public class homeController implements Initializable {
     private void clearFields() {
         tfLogTitle.clear();
         taLogContent.clear();
+        taStaticLogContent.clear();
     }
 
 
@@ -170,6 +171,11 @@ public class homeController implements Initializable {
     @FXML
     private void changePaneToResetPass() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("forgotPass.fxml"));
+        fxmlLoader.setControllerFactory(controllerClass -> {
+            homeController controller = new homeController();
+            controller.initializeUserData(UserId,currUsername);
+            return controller;
+        });
         Pane tempPane = fxmlLoader.load();
         bpProfile.setCenter(tempPane);
     }
@@ -197,6 +203,11 @@ public class homeController implements Initializable {
     @FXML
     private void changeToDelete() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("deleteAccount.fxml"));
+        fxmlLoader.setControllerFactory(controllerClass -> {
+            homeController controller = new homeController();
+            controller.initializeUserData(UserId,currUsername);
+            return controller;
+        });
         Pane tempPane = fxmlLoader.load();
         bpProfile.setCenter(tempPane);
     }
@@ -239,7 +250,9 @@ public class homeController implements Initializable {
     private void deleteAccount() throws IOException {
         try (Connection c = MySQLConnection.getConnection();
              PreparedStatement preparedStatement = c.prepareStatement(
-                     "DELETE FROM users WHERE email = ? AND password = ?")) {
+                     "DELETE FROM users WHERE email = ? AND password = ?");
+             PreparedStatement preparedStatement2 = c.prepareStatement(
+                     "DELETE FROM tblLog WHERE userId = ?")) {
 
             String email = tfemail.getText();
             String pass = tfpassword.getText();
@@ -247,10 +260,12 @@ public class homeController implements Initializable {
             preparedStatement.setString(1, email);
             preparedStatement.setString(2, pass);
 
-            int rowsDeleted = preparedStatement.executeUpdate();
-            if (rowsDeleted > 0) {
+            preparedStatement2.setInt(1, UserId);
 
-                System.out.println("Account Deleted Succesfully");
+            preparedStatement2.executeUpdate();
+            int rowsDeleted = preparedStatement.executeUpdate();
+            if (rowsDeleted > 0 ) {
+                System.out.println("Account Deleted Successfully");
 
                 Parent pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("index.fxml")));
                 Stage stage = (Stage) btnConfirmDel.getScene().getWindow();
@@ -259,15 +274,14 @@ public class homeController implements Initializable {
                 Scene scene = new Scene(pane, currentWidth, currentHeight);
                 stage.setScene(scene);
                 stage.show();
-
             } else {
-                System.out.println("Account Deletion FAIL");
+                System.out.println("Account Deletion FAILED");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
+
 
     @FXML
     public TextArea taStaticLogContent;
